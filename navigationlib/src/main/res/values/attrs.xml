@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NavigationView">
+        <!-- 分隔线颜色 默认#E6E6E6 -->
+        <attr name="dividerLineColor" format="color" />
+        <!-- 图片高 默认0(即使用权重属性) -->
+        <attr name="imageHeight" format="dimension" />
+        <!-- 图片高 权重 默认0.5 -->
+        <attr name="imageSizeWeight" format="float" />
+        <!-- 图文间距高 默认1dp -->
+        <attr name="spaceHeight" format="dimension" />
+        <!-- 文字 颜色 普通状态 默认#666666 -->
+        <attr name="navTextColorNormal" format="color" />
+        <!-- 文字 颜色 选中状态 默认#333333 -->
+        <attr name="navTextColorSelect" format="color" />
+        <!-- 文字 大小 默认12sp -->
+        <attr name="navTextSize" format="dimension" />
+    </declare-styleable>
+</resources>
