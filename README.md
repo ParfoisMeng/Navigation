@@ -6,7 +6,7 @@
 ### 直接上预览
 | ViewPager | Fragment | Demo下载 |
 | :---: | :---: | :---: |
-| <img src="https://github.com/ParfoisMeng/Navigation/raw/master/screenshot/navigation_with_vp.gif" width="260px"/> | <img src="https://github.com/ParfoisMeng/Navigation/raw/master/screenshot/navigation_with_fg.gif" width="260px"/> | <img src="https://github.com/ParfoisMeng/Navigation/raw/master/demo/demo_qr.gif" width="260px"/><br><br>[Demo下载](https://raw.githubusercontent.com/ParfoisMeng/Navigation/master/demo/demo.apk) |
+| <img src="https://github.com/ParfoisMeng/Navigation/raw/master/screenshot/navigation_with_vp.gif" width="260px"/> | <img src="https://github.com/ParfoisMeng/Navigation/raw/master/screenshot/navigation_with_fg.gif" width="260px"/> | <img src="https://github.com/ParfoisMeng/Navigation/raw/master/demo/demo_qr.png" width="260px"/><br><br>[Demo下载](https://raw.githubusercontent.com/ParfoisMeng/Navigation/master/demo/demo.apk) |
 
 ### 引用
  - 请将last-version替换为最新版本号 - [![JitPack](https://jitpack.io/v/ParfoisMeng/Navigation.svg)](https://jitpack.io/#ParfoisMeng/Navigation)
