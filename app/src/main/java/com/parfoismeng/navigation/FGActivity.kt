@@ -36,8 +36,8 @@ class FGActivity : AppCompatActivity() {
         setContentView(R.layout.activity_fg)
 
         navViewFG.addItems(itemList)
-        navViewFG.setOnItemChangeListener(object : NavigationView.ItemChangeListener {
-            override fun onItemChange(position: Int): Boolean {
+        navViewFG.setOnItemClickListener(object : NavigationView.ItemClickListener {
+            override fun onItemClick(position: Int): Boolean {
                 val model: NavigationView.NavItemModel = itemList[position]
                 val str = "text = ${model.navText}\nposition = $position"
                 Toast.makeText(this@FGActivity, str, Toast.LENGTH_SHORT).show()

@@ -44,8 +44,8 @@ class VPActivity : AppCompatActivity() {
         setContentView(R.layout.activity_vp)
 
         navViewVP.addItems(itemList)
-        navViewVP.setOnItemChangeListener(object : NavigationView.ItemChangeListener {
-            override fun onItemChange(position: Int): Boolean {
+        navViewVP.setOnItemClickListener(object : NavigationView.ItemClickListener {
+            override fun onItemClick(position: Int): Boolean {
                 val model: NavigationView.NavItemModel = itemList[position]
                 val str = "text = ${model.navText}\nposition = $position"
                 Toast.makeText(this@VPActivity, str, Toast.LENGTH_SHORT).show()

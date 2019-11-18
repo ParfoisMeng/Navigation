@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -70,7 +69,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
     /**
      * Tab点击事件
      */
-    private var onItemChangeListener: ItemChangeListener? = null
+    private var onItemClickListener: ItemClickListener? = null
 
     /**
      * 绑定的ViewPager
@@ -113,7 +112,6 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
         })
     }
 
-    @Suppress("unused")
     fun addItems(vararg items: NavItemModel) {
         addItems(items.toList())
     }
@@ -121,7 +119,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
     fun addItems(items: List<NavItemModel>) {
         items.forEachIndexed { index, model ->
             NavItemView.build(this, model).also { navItemView ->
-                navItemView.setOnClickListener { onItemChange(index) }
+                navItemView.setOnClickListener { onItemClick(index) }
                 llNavButton.addView(navItemView)
                 if (!model.ignoreTabSwitch) {
                     itemViewList.add(navItemView)
@@ -140,7 +138,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
      */
     private var lastItemChangeTimeStamp = 0L
 
-    private fun onItemChange(position: Int) {
+    private fun onItemClick(position: Int) {
         // 防止短时间(200ms)内多次切换
         val nowTime = System.currentTimeMillis()
         if (nowTime - lastItemChangeTimeStamp <= 200) {
@@ -148,8 +146,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
         }
         lastItemChangeTimeStamp = nowTime
 
-        Log.d("Test-onItemChange", "position = $position")
-        if (onItemChangeListener?.onItemChange(position) == true) {
+        if (onItemClickListener?.onItemClick(position) == true) {
             if (!itemModelList[position].ignoreTabSwitch) {
                 setCurrentItem(getRealPositionIgnore(position))
             }
@@ -162,7 +159,6 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
     fun setCurrentItem(position: Int) {
         if (currentItem == position) return
 
-        Log.d("Test-setCurrentItem", "currentItem = $currentItem \t position = $position")
         itemViewList.forEachIndexed { index, navItemView ->
             if (position == index) {
                 navItemView.isSelect = true
@@ -213,8 +209,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
             }
 
             override fun onPageSelected(position: Int) {
-                Log.d("Test-onPageSelected", "currentItem = $currentItem \t position = $position")
-                onItemChange(getRealPositionIgnore(position, true))
+                onItemClick(getRealPositionIgnore(position, true))
             }
         })
     }
@@ -258,23 +253,31 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
     /**
      * 设置点击事件监听
      */
-    fun setOnItemChangeListener(listener: ItemChangeListener?) {
-        onItemChangeListener = listener
+    fun setOnItemClickListener(listener: ItemClickListener?) {
+        onItemClickListener = listener
+    }
+
+    fun setOnItemClickListener(onItemClick: (position: Int) -> Boolean) {
+        onItemClickListener = object : ItemClickListener {
+            override fun onItemClick(position: Int): Boolean {
+                return onItemClick(position)
+            }
+        }
     }
 
     /**
      * 点击事件监听
      */
-    interface ItemChangeListener {
+    interface ItemClickListener {
         /**
          * 点击事件
          * @param position Item对应的下标
          * @return true下一步，false拦截
          */
-        fun onItemChange(position: Int): Boolean
+        fun onItemClick(position: Int): Boolean
     }
 
-    data class NavItemModel(
+    open class NavItemModel(
             /**
              * 图片 普通状态
              */
