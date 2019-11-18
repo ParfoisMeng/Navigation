@@ -32,15 +32,37 @@
     addItems(vararg items: NavItemModel)
     addItems(items: List<NavItemModel>)
 
-    // 设置事件监听
+    // 设置事件监听 *可使用lambda
     setOnItemChangeListener(listener: ItemChangeListener?)
+    setOnItemChangeListener{ ... }
 
     // 绑定ViewPager
     bindViewPager(vp: ViewPager)
+    // 绑定Fragment
     bindFragments(@IdRes container: Int, fgs: List<Fragment>, manager: FragmentManager = (context as FragmentActivity).supportFragmentManager)
 
     // 选中Item
     setCurrentItem(position: Int)
+
+    // Model 属性
+    open class NavItemModel(
+            /**
+             * 图片 普通状态
+             */
+            var imageDrawableNormal: Drawable? = null,
+            /**
+             * 图片 选中状态
+             */
+            var imageDrawableSelect: Drawable? = null,
+            /**
+             * 文字 内容
+             */
+            var navText: String? = "",
+            /**
+             * 忽略页面切换 （对于特殊化Item(如加号/发布)不需要切换Tab时，请设为true）
+             */
+            val ignoreTabSwitch: Boolean = false
+    )
 ```
 ``` xml
     <!-- XML属性注释 -->
@@ -64,6 +86,7 @@
 ```
 
 ### 更新
+* 简单更新 - 1.0.1
 * 初版发布 - 1.0.0
 
 ### 计划
