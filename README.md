@@ -35,7 +35,7 @@
     /**
      * 设置点击事件监听
      */
-    fun setOnItemClickListener(onItemClick: ItemClickListener?)
+    fun setOnItemClickListener(onItemClick: ItemClickListener)
     /**
      * 点击事件监听
      * 入参 Item对应的下标
@@ -49,8 +49,8 @@
     fun bindViewPager(vp: ViewPager)
     /**
      * 绑定Fragment
-     * @param fgs Fragment集合 (请确保集合长度与非ignoreTabSwitch的Item长度一致)
      * @param container 容器ID
+     * @param fgs Fragment集合 (请确保集合长度与非ignoreTabSwitch的Item长度一致)
      * @param manager Fragment管理器 默认依据父级Context获取 (若父级非FragmentActivity会报错)
      * @param defaultSelect 默认选中的item (默认第0个，为null不选中)
      */
@@ -103,6 +103,7 @@
 ```
 
 ### 更新
+* Tab 点击事件默认 true - 1.1.1
 * 绑定 Fragment 时不会再初始即全 Add - 1.1.0
 * 简单更新 - 1.0.1
 * 初版发布 - 1.0.0
@@ -111,9 +112,9 @@
 * 暂无
 
 ### 支持
-劳烦各位大佬给个Star让我出去好装B行嘛！
+劳烦各位大佬给个 Star 让我出去好装B行嘛！
 
 ### 其他
-已使用<b>996 License</b>，为程序员发声，为自己发声。
+已使用 <b>996 License</b> ，为程序员发声，为自己发声。
 
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)

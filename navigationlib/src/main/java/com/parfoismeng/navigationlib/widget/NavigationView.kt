@@ -76,7 +76,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
     /**
      * Tab点击事件
      */
-    private var onItemClickListener: ItemClickListener? = null
+    private var onItemClickListener: ItemClickListener = { _: Int -> true }
 
     /**
      * 绑定的ViewPager
@@ -153,7 +153,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
         }
         lastItemChangeTimeStamp = nowTime
 
-        if (onItemClickListener?.invoke(position) == true) {
+        if (onItemClickListener(position)) {
             if (!itemModelList[position].ignoreTabSwitch) {
                 setCurrentItem(getRealPositionIgnore(position))
             }
@@ -223,8 +223,8 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
 
     /**
      * 绑定Fragment
-     * @param fgs Fragment集合 (请确保集合长度与非ignoreTabSwitch的Item长度一致)
      * @param container 容器ID
+     * @param fgs Fragment集合 (请确保集合长度与非ignoreTabSwitch的Item长度一致)
      * @param manager Fragment管理器 默认依据父级Context获取 (若父级非FragmentActivity会报错)
      * @param defaultSelect 默认选中的item (默认第0个，为null不选中)
      */
@@ -261,7 +261,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
     /**
      * 设置点击事件监听
      */
-    fun setOnItemClickListener(onItemClick: ItemClickListener?) {
+    fun setOnItemClickListener(onItemClick: ItemClickListener) {
         onItemClickListener = onItemClick
     }
 
