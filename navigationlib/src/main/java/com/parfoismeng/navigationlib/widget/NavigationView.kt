@@ -279,7 +279,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
              */
             var navText: String? = "",
             /**
-             * 忽略页面切换
+             * 忽略页面切换 （对于特殊化Item(如加号/发布)不需要切换Tab时，请设为true）
              */
             val ignoreTabSwitch: Boolean = false
     )

@@ -1,24 +1,24 @@
 # Navigation
-更简更轻的导航Bar控件，支持绑定ViewPager或者Fragments。支持特殊化Item（加号、发布等）！  [![JitPack](https://jitpack.io/v/ParfoisMeng/Navigation.svg)](https://jitpack.io/#ParfoisMeng/Navigation)
+更简更轻的导航 Bar 控件，支持绑定 ViewPager 或者 Fragments 。支持特殊化 Item （加号、发布等）！  [![JitPack](https://jitpack.io/v/ParfoisMeng/Navigation.svg)](https://jitpack.io/#ParfoisMeng/Navigation)
 
 - - - - - 
 
 ### 直接上预览
-| ViewPager | Fragment | Demo下载 |
+| ViewPager | Fragment | Demo 下载 |
 | :---: | :---: | :---: |
 | <img src="https://github.com/ParfoisMeng/Navigation/raw/master/screenshot/navigation_with_vp.gif" width="260px"/> | <img src="https://github.com/ParfoisMeng/Navigation/raw/master/screenshot/navigation_with_fg.gif" width="260px"/> | <img src="https://github.com/ParfoisMeng/Navigation/raw/master/demo/demo_qr.png" width="260px"/><br><br>[Demo下载](https://raw.githubusercontent.com/ParfoisMeng/Navigation/master/demo/demo.apk) |
 
 ### 引用
- - 请将last-version替换为最新版本号 - [![JitPack](https://jitpack.io/v/ParfoisMeng/Navigation.svg)](https://jitpack.io/#ParfoisMeng/Navigation)
+ - 请将 last-version 替换为最新版本号 - [![JitPack](https://jitpack.io/v/ParfoisMeng/Navigation.svg)](https://jitpack.io/#ParfoisMeng/Navigation)
 ```
-    // 1.添加jitpack仓库
+    // 1.添加 jitpack 仓库
     allprojects {
         repositories {
             ...
             maven { url 'https://jitpack.io' }
         }
     }
-    // 2.添加项目依赖（last-version替换为最新版本号）
+    // 2.添加项目依赖（ last-version 替换为最新版本号）
     dependencies {
         implementation 'com.github.ParfoisMeng:Navigation:last-version'
     }
@@ -28,21 +28,38 @@
 ``` kotlin
     // 主要方法
 
-    // 添加Item项目，可变参数[vararg] 或 直接传入Model集合
-    addItems(vararg items: NavItemModel)
-    addItems(items: List<NavItemModel>)
+    // 添加 Item 项目，可变参数 [vararg] 或 直接传入 Model 集合
+    fun addItems(vararg items: NavItemModel)
+    fun addItems(items: List<NavItemModel>)
 
-    // 设置事件监听 *可使用lambda
-    setOnItemChangeListener(listener: ItemChangeListener?)
-    setOnItemChangeListener{ ... }
+    /**
+     * 设置点击事件监听
+     */
+    fun setOnItemClickListener(onItemClick: ItemClickListener?)
+    /**
+     * 点击事件监听
+     * 入参 Item对应的下标
+     * 返参 true下一步，false拦截
+     */
+    typealias ItemClickListener = (Int) -> Boolean
 
-    // 绑定ViewPager
-    bindViewPager(vp: ViewPager)
-    // 绑定Fragment
-    bindFragments(@IdRes container: Int, fgs: List<Fragment>, manager: FragmentManager = (context as FragmentActivity).supportFragmentManager)
+    /**
+     * 绑定ViewPager
+     */
+    fun bindViewPager(vp: ViewPager)
+    /**
+     * 绑定Fragment
+     * @param fgs Fragment集合 (请确保集合长度与非ignoreTabSwitch的Item长度一致)
+     * @param container 容器ID
+     * @param manager Fragment管理器 默认依据父级Context获取 (若父级非FragmentActivity会报错)
+     * @param defaultSelect 默认选中的item (默认第0个，为null不选中)
+     */
+    fun bindFragments(@IdRes container: Int, fgs: List<Fragment>, manager: FragmentManager = (context as FragmentActivity).supportFragmentManager, defaultSelect: Int? = 0)
 
-    // 选中Item
-    setCurrentItem(position: Int)
+    /**
+     * 变更选中Item
+     */
+    fun setCurrentItem(position: Int)
 
     // Model 属性
     open class NavItemModel(
@@ -86,6 +103,7 @@
 ```
 
 ### 更新
+* 绑定 Fragment 时不会再初始即全 Add - 1.1.0
 * 简单更新 - 1.0.1
 * 初版发布 - 1.0.0
 
