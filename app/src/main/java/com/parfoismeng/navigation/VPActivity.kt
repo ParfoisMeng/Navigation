@@ -44,14 +44,12 @@ class VPActivity : AppCompatActivity() {
         setContentView(R.layout.activity_vp)
 
         navViewVP.addItems(itemList)
-        navViewVP.setOnItemClickListener(object : NavigationView.ItemClickListener {
-            override fun onItemClick(position: Int): Boolean {
-                val model: NavigationView.NavItemModel = itemList[position]
-                val str = "text = ${model.navText}\nposition = $position"
-                Toast.makeText(this@VPActivity, str, Toast.LENGTH_SHORT).show()
-                return true
-            }
-        })
+        navViewVP.setOnItemClickListener { position: Int ->
+            val model: NavigationView.NavItemModel = itemList[position]
+            val str = "text = ${model.navText}\nposition = $position"
+            Toast.makeText(this@VPActivity, str, Toast.LENGTH_SHORT).show()
+            true
+        }
 
         vp.offscreenPageLimit = 5
         vp.adapter = CustomPagerAdapter(this, listOf("000", "111", "222", "333"))

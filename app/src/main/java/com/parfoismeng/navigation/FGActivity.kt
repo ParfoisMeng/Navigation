@@ -36,14 +36,12 @@ class FGActivity : AppCompatActivity() {
         setContentView(R.layout.activity_fg)
 
         navViewFG.addItems(itemList)
-        navViewFG.setOnItemClickListener(object : NavigationView.ItemClickListener {
-            override fun onItemClick(position: Int): Boolean {
-                val model: NavigationView.NavItemModel = itemList[position]
-                val str = "text = ${model.navText}\nposition = $position"
-                Toast.makeText(this@FGActivity, str, Toast.LENGTH_SHORT).show()
-                return true
-            }
-        })
+        navViewFG.setOnItemClickListener { position: Int ->
+            val model: NavigationView.NavItemModel = itemList[position]
+            val str = "text = ${model.navText}\nposition = $position"
+            Toast.makeText(this@FGActivity, str, Toast.LENGTH_SHORT).show()
+            true
+        }
 
         val fgList = listOf(MyFragment("000"), MyFragment("111"), MyFragment("222"), MyFragment("333"))
         navViewFG.bindFragments(R.id.flContent, fgList)

@@ -16,11 +16,18 @@ import androidx.viewpager.widget.ViewPager
 import com.parfoismeng.navigationlib.R
 import com.parfoismeng.navigationlib.utils.dp2px
 import com.parfoismeng.navigationlib.utils.sp2px
+import com.parfoismeng.navigationlib.widget.NavigationView.NavItemView.Companion.buildNavItem
 
-
+@Suppress("unused")
 class NavigationView constructor(context: Context, attrs: AttributeSet? = null) : FrameLayout(context, attrs) {
     private val llNavButton by lazy { LinearLayout(context) }
     private val viewLine by lazy { View(context) }
+
+    /**
+     * 容器布局ID
+     */
+    @IdRes
+    private var containerLayoutId: Int = 0
 
     // ------ NavigationView使用 ------
     /**
@@ -118,7 +125,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
 
     fun addItems(items: List<NavItemModel>) {
         items.forEachIndexed { index, model ->
-            NavItemView.build(this, model).also { navItemView ->
+            buildNavItem(model).also { navItemView ->
                 navItemView.setOnClickListener { onItemClick(index) }
                 llNavButton.addView(navItemView)
                 if (!model.ignoreTabSwitch) {
@@ -146,7 +153,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
         }
         lastItemChangeTimeStamp = nowTime
 
-        if (onItemClickListener?.onItemClick(position) == true) {
+        if (onItemClickListener?.invoke(position) == true) {
             if (!itemModelList[position].ignoreTabSwitch) {
                 setCurrentItem(getRealPositionIgnore(position))
             }
@@ -218,17 +225,15 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
      * 绑定Fragment
      * @param fgs Fragment集合 (请确保集合长度与非ignoreTabSwitch的Item长度一致)
      * @param container 容器ID
-     * @param manager Fragment管理器 默认依据父级Context获取(若父级非FragmentActivity会报错)
+     * @param manager Fragment管理器 默认依据父级Context获取 (若父级非FragmentActivity会报错)
+     * @param defaultSelect 默认选中的item (默认第0个，为null不选中)
      */
-    fun bindFragments(@IdRes container: Int, fgs: List<Fragment>, manager: FragmentManager = (context as FragmentActivity).supportFragmentManager) {
+    fun bindFragments(@IdRes container: Int, fgs: List<Fragment>, manager: FragmentManager = (context as FragmentActivity).supportFragmentManager, defaultSelect: Int? = 0) {
+        containerLayoutId = container
         fgList = fgs
         fgManager = manager
 
-        val tran = manager.beginTransaction()
-        fgs.forEach { fg ->
-            tran.add(container, fg)
-        }
-        tran.commit()
+        defaultSelect?.let { setCurrentItem(it) }
     }
 
     /**
@@ -242,6 +247,9 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
         val tran = fgManager?.beginTransaction()
         fgList?.forEachIndexed { index, fg ->
             if (position == index) {
+                if (!fg.isAdded) {
+                    tran?.add(containerLayoutId, fg)
+                }
                 tran?.show(fg)
             } else {
                 tran?.hide(fg)
@@ -253,28 +261,8 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
     /**
      * 设置点击事件监听
      */
-    fun setOnItemClickListener(listener: ItemClickListener?) {
-        onItemClickListener = listener
-    }
-
-    fun setOnItemClickListener(onItemClick: (position: Int) -> Boolean) {
-        onItemClickListener = object : ItemClickListener {
-            override fun onItemClick(position: Int): Boolean {
-                return onItemClick(position)
-            }
-        }
-    }
-
-    /**
-     * 点击事件监听
-     */
-    interface ItemClickListener {
-        /**
-         * 点击事件
-         * @param position Item对应的下标
-         * @return true下一步，false拦截
-         */
-        fun onItemClick(position: Int): Boolean
+    fun setOnItemClickListener(onItemClick: ItemClickListener?) {
+        onItemClickListener = onItemClick
     }
 
     open class NavItemModel(
@@ -421,11 +409,18 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
         }
 
         companion object {
-            fun build(view: NavigationView, model: NavItemModel): NavItemView {
-                return NavItemView(view.context).apply {
-                    update(model, view.imageHeight, view.imageSizeWeight, view.spaceHeight, view.navTextColorNormal, view.navTextColorSelect, view.navTextSize)
+            fun NavigationView.buildNavItem(model: NavItemModel): NavItemView {
+                return NavItemView(context).apply {
+                    update(model, imageHeight, imageSizeWeight, spaceHeight, navTextColorNormal, navTextColorSelect, navTextSize)
                 }
             }
         }
     }
 }
+
+/**
+ * 点击事件监听
+ * 入参 Item对应的下标
+ * 返参 true下一步，false拦截
+ */
+typealias ItemClickListener = (Int) -> Boolean
