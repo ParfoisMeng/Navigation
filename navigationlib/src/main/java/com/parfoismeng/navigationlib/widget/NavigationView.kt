@@ -265,6 +265,15 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
         onItemClickListener = onItemClick
     }
 
+    companion object {
+        /**
+         * 获取指定下标的 NavItemView
+         */
+        fun NavigationView.getNavItemView(index: Int): NavItemView {
+            return itemViewList[index]
+        }
+    }
+
     open class NavItemModel(
             /**
              * 图片 普通状态
@@ -284,7 +293,7 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
             val ignoreTabSwitch: Boolean = false
     )
 
-    private class NavItemView constructor(context: Context) : LinearLayout(context) {
+    class NavItemView constructor(context: Context) : LinearLayout(context) {
         private val ivNavItem by lazy { ImageView(context) }
         private val spaceNavItem by lazy { Space(context) }
         private val tvNavItem by lazy { TextView(context) }
@@ -413,6 +422,14 @@ class NavigationView constructor(context: Context, attrs: AttributeSet? = null) 
                 return NavItemView(context).apply {
                     update(model, imageHeight, imageSizeWeight, spaceHeight, navTextColorNormal, navTextColorSelect, navTextSize)
                 }
+            }
+
+            fun NavItemView.getNavItemImageView(): ImageView {
+                return ivNavItem
+            }
+
+            fun NavItemView.getNavItemTextView(): TextView {
+                return tvNavItem
             }
         }
     }
